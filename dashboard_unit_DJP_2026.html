@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Proyek Unit — DJP 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface2: #f0ede8;
+  --border: #e2ddd6;
+  --border2: #ccc8c0;
+  --text: #1a1814;
+  --text2: #6b6560;
+  --text3: #9e9890;
+  --accent: #2d5a8e;
+  --accent-light: #e8f0f8;
+  --accent2: #1d7a5a;
+  --accent2-light: #e6f4ee;
+  --warn: #b85c00;
+  --warn-light: #fdf0e6;
+  --danger: #b52a2a;
+  --danger-light: #fdeaea;
+  --success: #1d7a5a;
+  --success-light: #e6f4ee;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.10), 0 2px 4px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit}
+
+/* LOGIN */
+#login-screen{
+  display:flex;align-items:center;justify-content:center;min-height:100vh;
+  background:linear-gradient(135deg,#1a2e45 0%,#2d5a8e 50%,#1d7a5a 100%);
+}
+.login-box{
+  background:var(--surface);border-radius:var(--radius-lg);padding:2.5rem;
+  width:380px;box-shadow:var(--shadow-md);
+}
+.login-logo{
+  text-align:center;margin-bottom:2rem;
+}
+.login-logo .brand{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-.5px}
+.login-logo .sub{font-size:12px;color:var(--text3);margin-top:2px}
+.login-field{margin-bottom:1rem}
+.login-field label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.login-field select,.login-field input{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
+  font-size:14px;color:var(--text);background:var(--bg);transition:border-color .15s;outline:none;
+}
+.login-field select:focus,.login-field input:focus{border-color:var(--accent)}
+.btn-login{
+  width:100%;padding:12px;background:var(--accent);color:#fff;border:none;
+  border-radius:var(--radius);font-size:14px;font-weight:500;margin-top:.5rem;
+  transition:background .15s;letter-spacing:.2px;
+}
+.btn-login:hover{background:#234a73}
+.login-error{
+  background:var(--danger-light);color:var(--danger);border:1px solid #f5c2c2;
+  border-radius:var(--radius);padding:10px 12px;font-size:13px;margin-top:1rem;display:none;
+}
+.login-hint{font-size:11px;color:var(--text3);text-align:center;margin-top:1rem;line-height:1.6}
+
+/* APP SHELL */
+#app{display:none;min-height:100vh;flex-direction:column}
+.topbar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.topbar-left{display:flex;align-items:center;gap:1rem}
+.brand-mark{font-size:16px;font-weight:600;color:var(--text);letter-spacing:-.3px}
+.brand-mark span{color:var(--accent)}
+.year-tag{font-size:11px;background:var(--accent-light);color:var(--accent);padding:2px 8px;border-radius:20px;font-weight:500}
+.topbar-right{display:flex;align-items:center;gap:.75rem}
+.user-chip{
+  display:flex;align-items:center;gap:8px;padding:5px 12px;
+  background:var(--surface2);border-radius:20px;font-size:13px;
+}
+.user-avatar{
+  width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:600;color:#fff;flex-shrink:0;
+}
+.user-name{font-weight:500}
+.role-badge{
+  font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;
+}
+.role-admin{background:#1a2e45;color:#fff}
+.role-user{background:var(--accent-light);color:var(--accent)}
+.btn-logout{
+  padding:6px 14px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius);
+  font-size:13px;color:var(--text2);transition:all .15s;
+}
+.btn-logout:hover{background:var(--danger-light);color:var(--danger);border-color:#f5c2c2}
+
+/* MAIN LAYOUT */
+.main-layout{display:flex;flex:1}
+.sidebar{
+  width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);
+  padding:1.25rem .75rem;
+}
+.sidebar-section{margin-bottom:1.5rem}
+.sidebar-label{
+  font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);
+  font-weight:600;padding:0 .5rem;margin-bottom:.5rem;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius);
+  cursor:pointer;color:var(--text2);font-size:13px;font-weight:400;transition:all .12s;
+  border:none;background:none;width:100%;text-align:left;
+}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--accent-light);color:var(--accent);font-weight:500}
+.nav-icon{width:16px;height:16px;flex-shrink:0;opacity:.7}
+.nav-item.active .nav-icon{opacity:1}
+.content{flex:1;padding:1.5rem;min-width:0;overflow-x:hidden}
+
+/* CARDS / PANELS */
+.page{display:none}
+.page.active{display:block}
+.page-header{margin-bottom:1.25rem}
+.page-title{font-size:18px;font-weight:600;color:var(--text);letter-spacing:-.3px}
+.page-sub{font-size:13px;color:var(--text3);margin-top:2px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;box-shadow:var(--shadow)}
+.metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.25rem}
+.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem;box-shadow:var(--shadow)}
+.metric-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.metric-val{font-size:24px;font-weight:600;color:var(--text);letter-spacing:-.5px}
+.metric-sub{font-size:11px;color:var(--text3);margin-top:3px}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;min-width:700px}
+thead th{
+  background:var(--surface2);padding:10px 12px;text-align:left;font-size:11px;
+  font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--surface2)}
+td{padding:10px 12px;font-size:13px;color:var(--text);vertical-align:middle}
+td.muted{color:var(--text3)}
+
+/* BADGES */
+.badge{
+  display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;
+  white-space:nowrap;
+}
+.badge-belum{background:#f0ede8;color:#6b6560}
+.badge-proses{background:#e8f0f8;color:#2d5a8e}
+.badge-selesai{background:#e6f4ee;color:#1d7a5a}
+.badge-tw1{background:#e8f0f8;color:#1a4d8a}
+.badge-tw2{background:#e6f4ee;color:#0f5e40}
+.badge-tw3{background:#fdf0e6;color:#7a3900}
+.badge-tw4{background:#fdeaea;color:#8a1a1a}
+
+/* EDIT CONTROLS */
+.status-select{
+  padding:4px 8px;border:1px solid var(--border);border-radius:5px;font-size:12px;
+  font-family:inherit;color:var(--text);background:var(--bg);cursor:pointer;outline:none;
+}
+.status-select:disabled{opacity:.4;cursor:not-allowed;background:var(--surface2)}
+.progress-input{
+  width:60px;padding:4px 6px;border:1px solid var(--border);border-radius:5px;
+  font-size:12px;font-family:'DM Mono',monospace;color:var(--text);background:var(--bg);
+  text-align:center;outline:none;
+}
+.progress-input:disabled{opacity:.4;cursor:not-allowed;background:var(--surface2)}
+.note-btn{
+  padding:4px 10px;border:1px solid var(--border2);border-radius:5px;font-size:12px;
+  background:transparent;color:var(--text2);transition:all .12s;white-space:nowrap;
+}
+.note-btn:hover:not(:disabled){background:var(--accent-light);color:var(--accent);border-color:var(--accent)}
+.note-btn:disabled{opacity:.35;cursor:not-allowed}
+.save-btn{
+  padding:5px 14px;background:var(--accent);color:#fff;border:none;border-radius:5px;
+  font-size:12px;font-weight:500;transition:background .12s;white-space:nowrap;
+}
+.save-btn:hover{background:#234a73}
+
+/* PROGRESS BAR */
+.prog-bar-wrap{display:flex;align-items:center;gap:8px}
+.prog-bar-track{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;min-width:60px}
+.prog-bar-fill{height:100%;border-radius:3px;transition:width .3s}
+.prog-pct{font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);min-width:28px;text-align:right}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.filter-select{
+  padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius);
+  font-size:13px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;
+}
+.filter-select:focus{border-color:var(--accent)}
+.search-input{
+  padding:7px 12px;border:1px solid var(--border);border-radius:var(--radius);
+  font-size:13px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;
+  min-width:200px;flex:1;
+}
+.search-input:focus{border-color:var(--accent)}
+.filter-label{font-size:12px;color:var(--text3);font-weight:500}
+.result-count{font-size:12px;color:var(--text3);margin-left:auto}
+
+/* MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;
+  align-items:center;justify-content:center;
+}
+.modal-overlay.open{display:flex}
+.modal-box{
+  background:var(--surface);border-radius:var(--radius-lg);padding:1.75rem;
+  width:480px;max-width:95vw;box-shadow:var(--shadow-md);
+}
+.modal-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--text3);margin-bottom:1rem}
+.modal-field{margin-bottom:1rem}
+.modal-field label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px}
+.modal-field textarea,.modal-field input,.modal-field select{
+  width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:var(--radius);
+  font-size:13px;font-family:inherit;color:var(--text);background:var(--bg);outline:none;
+  transition:border-color .15s;resize:vertical;
+}
+.modal-field textarea:focus,.modal-field input:focus,.modal-field select:focus{border-color:var(--accent)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
+.btn-cancel{
+  padding:8px 18px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius);
+  font-size:13px;color:var(--text2);
+}
+.btn-cancel:hover{background:var(--surface2)}
+.btn-save{
+  padding:8px 18px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);
+  font-size:13px;font-weight:500;
+}
+.btn-save:hover{background:#234a73}
+.btn-danger{
+  padding:8px 18px;background:var(--danger);color:#fff;border:none;border-radius:var(--radius);
+  font-size:13px;font-weight:500;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;background:#1a1814;color:#fff;
+  padding:10px 18px;border-radius:var(--radius);font-size:13px;z-index:9999;
+  transform:translateY(80px);transition:transform .25s;box-shadow:var(--shadow-md);
+}
+.toast.show{transform:translateY(0)}
+
+/* OVERVIEW GRID */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:1.25rem}
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem;box-shadow:var(--shadow)}
+.proj-card-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.4}
+.proj-card-members{font-size:11px;color:var(--text3);margin-bottom:10px}
+.proj-card-bar{height:7px;background:var(--surface2);border-radius:4px;overflow:hidden;margin-bottom:5px}
+.proj-card-bar-fill{height:100%;border-radius:4px;transition:width .4s}
+.proj-card-pct{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace}
+
+/* EMPLOYEE GRID */
+.emp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.emp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem;box-shadow:var(--shadow)}
+.emp-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.emp-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;flex-shrink:0}
+.emp-card-name{font-size:14px;font-weight:600;color:var(--text)}
+.emp-card-count{font-size:11px;color:var(--text3)}
+.emp-card-bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin:8px 0 4px}
+.emp-bar-fill{height:100%;border-radius:3px}
+.emp-card-stats{display:flex;gap:10px;margin-top:8px}
+.emp-stat{text-align:center;flex:1}
+.emp-stat-val{font-size:16px;font-weight:600;color:var(--text);font-family:'DM Mono',monospace}
+.emp-stat-label{font-size:10px;color:var(--text3)}
+
+/* ADMIN PANEL */
+.admin-section{margin-bottom:1.5rem}
+.admin-section-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.user-manage-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.user-manage-row:last-child{border-bottom:none}
+.um-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0}
+.um-name{font-weight:500;font-size:13px;flex:1}
+.um-pwd{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
+.um-role{font-size:11px}
+.btn-edit-user{padding:4px 10px;border:1px solid var(--border2);border-radius:5px;font-size:12px;background:transparent;color:var(--text2)}
+.btn-edit-user:hover{background:var(--accent-light);color:var(--accent);border-color:var(--accent)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .content{padding:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="brand">Dashboard Unit <span>DJP</span></div>
+      <div class="sub">Manajemen Proyek &amp; Pembagian Tugas · 2026</div>
+    </div>
+    <div class="login-field">
+      <label>Pilih Pengguna</label>
+      <select id="sel-user">
+        <option value="">— Pilih nama —</option>
+        <option value="admin">Administrator</option>
+        <option value="Elna">Elna</option>
+        <option value="Tiksa">Tiksa</option>
+        <option value="Atika">Atika</option>
+        <option value="Elin">Elin</option>
+        <option value="Elsa">Elsa</option>
+        <option value="Ardi">Ardi</option>
+        <option value="Iman">Iman</option>
+        <option value="Nila">Nila</option>
+        <option value="Joko">Joko</option>
+      </select>
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="inp-password" placeholder="Masukkan password" />
+    </div>
+    <button class="btn-login" onclick="doLogin()">Masuk</button>
+    <div class="login-error" id="login-error">Password salah atau pengguna tidak ditemukan.</div>
+    <div class="login-hint">
+      Password default pegawai: nama depan + <code>2026</code><br>
+      Contoh: <strong>Elna</strong> → <code>Elna2026</code><br>
+      Admin → <code>Admin@DJP2026</code>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:flex;flex-direction:column">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="brand-mark">Dashboard <span>Unit</span></div>
+      <span class="year-tag">2026</span>
+    </div>
+    <div class="topbar-right">
+      <div class="user-chip">
+        <div class="user-avatar" id="top-avatar"></div>
+        <span class="user-name" id="top-name"></span>
+        <span class="role-badge" id="top-role"></span>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Keluar</button>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Menu</div>
+        <button class="nav-item active" onclick="showPage('overview')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+          Ringkasan
+        </button>
+        <button class="nav-item" onclick="showPage('tasks')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
+          Daftar Tugas
+        </button>
+        <button class="nav-item" onclick="showPage('employees')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="3"/><path d="M1 14c0-3 2.5-4 5-4s5 1 5 4"/><circle cx="13" cy="5" r="2"/><path d="M13 9c1.5 0 3 .8 3 3"/></svg>
+          Pegawai
+        </button>
+        <button class="nav-item" id="nav-mywork" onclick="showPage('mywork')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V3a1 1 0 00-1-1z"/><path d="M5 8l2 2 4-4"/></svg>
+          Tugas Saya
+        </button>
+        <button class="nav-item" id="nav-admin" onclick="showPage('admin')" style="display:none">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
+          Admin Panel
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- OVERVIEW PAGE -->
+      <div class="page active" id="page-overview">
+        <div class="page-header">
+          <div class="page-title">Ringkasan Proyek Unit</div>
+          <div class="page-sub">Tahun 2026 · Data diperbarui secara real-time</div>
+        </div>
+        <div class="metrics-row" id="overview-metrics"></div>
+        <div class="proj-grid" id="overview-projs"></div>
+        <div class="card">
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:1rem">Progress Per Pegawai</div>
+          <div id="overview-emp-bars"></div>
+        </div>
+      </div>
+
+      <!-- TASKS PAGE -->
+      <div class="page" id="page-tasks">
+        <div class="page-header">
+          <div class="page-title">Daftar Semua Tugas</div>
+          <div class="page-sub">Anda hanya bisa mengedit tugas yang ditugaskan kepada Anda</div>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">Filter:</span>
+          <select class="filter-select" id="f-pegawai" onchange="renderTasks()"><option value="">Semua Pegawai</option></select>
+          <select class="filter-select" id="f-proyek" onchange="renderTasks()"><option value="">Semua Proyek</option></select>
+          <select class="filter-select" id="f-tw" onchange="renderTasks()">
+            <option value="">Semua TW</option>
+            <option>TW I</option><option>TW II</option><option>TW III</option><option>TW IV</option>
+            <option>Triwulan I</option><option>Triwulan II</option><option>Triwulan III</option><option>Triwulan IV</option>
+          </select>
+          <select class="filter-select" id="f-status" onchange="renderTasks()">
+            <option value="">Semua Status</option>
+            <option>Belum Dimulai</option><option>Sedang Berjalan</option><option>Selesai</option>
+          </select>
+          <input class="search-input" id="f-search" placeholder="Cari kegiatan..." oninput="renderTasks()">
+          <span class="result-count" id="task-count"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Pegawai</th>
+                <th>Proyek</th>
+                <th>Kegiatan</th>
+                <th>TW</th>
+                <th>Bulan</th>
+                <th>Output</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>Catatan</th>
+                <th>Simpan</th>
+              </tr>
+            </thead>
+            <tbody id="task-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES PAGE -->
+      <div class="page" id="page-employees">
+        <div class="page-header">
+          <div class="page-title">Profil Pegawai</div>
+          <div class="page-sub">Kontribusi dan progress per anggota unit</div>
+        </div>
+        <div class="emp-grid" id="emp-grid"></div>
+      </div>
+
+      <!-- MY WORK PAGE -->
+      <div class="page" id="page-mywork">
+        <div class="page-header">
+          <div class="page-title">Tugas Saya</div>
+          <div class="page-sub" id="mywork-sub"></div>
+        </div>
+        <div class="filter-row">
+          <select class="filter-select" id="mf-status" onchange="renderMyWork()">
+            <option value="">Semua Status</option>
+            <option>Belum Dimulai</option><option>Sedang Berjalan</option><option>Selesai</option>
+          </select>
+          <select class="filter-select" id="mf-proyek" onchange="renderMyWork()"><option value="">Semua Proyek</option></select>
+          <span class="result-count" id="mywork-count"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Proyek</th>
+                <th>Kegiatan</th>
+                <th>TW</th>
+                <th>Bulan</th>
+                <th>Output</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>Catatan</th>
+                <th>Simpan</th>
+              </tr>
+            </thead>
+            <tbody id="mywork-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ADMIN PAGE -->
+      <div class="page" id="page-admin">
+        <div class="page-header">
+          <div class="page-title">Admin Panel</div>
+          <div class="page-sub">Kelola pengguna, reset data, dan pantau semua aktivitas</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div class="card">
+            <div class="admin-section-title">Kelola Pengguna & Password</div>
+            <div id="user-manage-list"></div>
+          </div>
+          <div class="card">
+            <div class="admin-section-title">Aksi Admin</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <button class="save-btn" style="text-align:left;padding:10px 14px" onclick="adminExport()">
+                Ekspor Data ke JSON
+              </button>
+              <button class="save-btn" style="text-align:left;padding:10px 14px;background:var(--accent2)" onclick="adminResetAllProgress()">
+                Reset Semua Progress ke 0%
+              </button>
+              <button class="save-btn" style="text-align:left;padding:10px 14px;background:var(--warn)" onclick="adminResetAllStatus()">
+                Reset Semua Status ke "Belum Dimulai"
+              </button>
+            </div>
+            <div style="margin-top:1rem">
+              <div class="admin-section-title">Statistik Sistem</div>
+              <div id="admin-stats" style="font-size:13px;color:var(--text2);line-height:2"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="admin-section-title">Edit Semua Tugas (Admin View)</div>
+          <div class="filter-row">
+            <select class="filter-select" id="af-pegawai" onchange="renderAdminTasks()"><option value="">Semua Pegawai</option></select>
+            <select class="filter-select" id="af-proyek" onchange="renderAdminTasks()"><option value="">Semua Proyek</option></select>
+            <select class="filter-select" id="af-status" onchange="renderAdminTasks()">
+              <option value="">Semua Status</option>
+              <option>Belum Dimulai</option><option>Sedang Berjalan</option><option>Selesai</option>
+            </select>
+          </div>
+          <div class="table-wrap" style="box-shadow:none;border:1px solid var(--border)">
+            <table>
+              <thead>
+                <tr>
+                  <th>Pegawai</th><th>Proyek</th><th>Kegiatan</th><th>TW</th><th>Bulan</th>
+                  <th>Status</th><th>Progress</th><th>Catatan</th><th>Simpan</th>
+                </tr>
+              </thead>
+              <tbody id="admin-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- NOTE MODAL -->
+<div class="modal-overlay" id="note-modal">
+  <div class="modal-box">
+    <div class="modal-title">Tambah / Edit Catatan</div>
+    <div class="modal-sub" id="note-modal-sub"></div>
+    <div class="modal-field">
+      <label>Catatan</label>
+      <textarea id="note-textarea" rows="4" placeholder="Tulis catatan perkembangan, kendala, atau informasi lain..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeNote()">Batal</button>
+      <button class="btn-save" onclick="saveNote()">Simpan Catatan</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT USER MODAL -->
+<div class="modal-overlay" id="user-modal">
+  <div class="modal-box">
+    <div class="modal-title">Edit Password Pengguna</div>
+    <div class="modal-sub" id="user-modal-sub"></div>
+    <div class="modal-field">
+      <label>Password Baru</label>
+      <input type="text" id="user-modal-pwd" placeholder="Masukkan password baru">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeUserModal()">Batal</button>
+      <button class="btn-save" onclick="saveUserPwd()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// =========================================================
+// DATA
+// =========================================================
+const INITIAL_DATA = [{"id":0,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan kerangka konseptual awal","triwulan":"TW I","bulan":"Jan","output":"Draft konsep","status":"Belum Dimulai","progress":0,"catatan":""},{"id":1,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Finalisasi kerangka konseptual","triwulan":"TW I","bulan":"Feb","output":"Nota Dinas Kerangka Konseptual","status":"Belum Dimulai","progress":0,"catatan":""},{"id":2,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Review kesiapan instrumen & data","triwulan":"TW I","bulan":"Mar","output":"Nota Dinas Review Awal","status":"Belum Dimulai","progress":0,"catatan":""},{"id":3,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Monitoring pengumpulan data","triwulan":"TW II","bulan":"Apr","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":4,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Evaluasi kualitas data","triwulan":"TW II","bulan":"Mei","output":"Catatan evaluasi data","status":"Belum Dimulai","progress":0,"catatan":""},{"id":5,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Approval dataset final","triwulan":"TW II","bulan":"Jun","output":"Dataset tervalidasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":6,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Analisis awal pengaruh penempatan","triwulan":"TW III","bulan":"Jul","output":"Draft hasil analisis","status":"Belum Dimulai","progress":0,"catatan":""},{"id":7,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Pendalaman analisis","triwulan":"TW III","bulan":"Aug","output":"Hasil analisis lengkap","status":"Belum Dimulai","progress":0,"catatan":""},{"id":8,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan narasi hasil","triwulan":"TW III","bulan":"Sep","output":"Draft laporan analisis","status":"Belum Dimulai","progress":0,"catatan":""},{"id":9,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan rekomendasi kebijakan","triwulan":"TW IV","bulan":"Okt","output":"Draft rekomendasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":10,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Finalisasi rekomendasi","triwulan":"TW IV","bulan":"Nov","output":"Nota Dinas Rekomendasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":11,"pegawai":"Elna","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Review akhir laporan","triwulan":"TW IV","bulan":"Des","output":"Laporan siap submit","status":"Belum Dimulai","progress":0,"catatan":""},{"id":12,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan draft instrumen","triwulan":"TW I","bulan":"Jan","output":"Draft instrumen","status":"Belum Dimulai","progress":0,"catatan":""},{"id":13,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyempurnaan instrumen","triwulan":"TW I","bulan":"Feb","output":"Instrumen final","status":"Belum Dimulai","progress":0,"catatan":""},{"id":14,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan kebutuhan data","triwulan":"TW I","bulan":"Mar","output":"Nota Dinas Data Requirement","status":"Belum Dimulai","progress":0,"catatan":""},{"id":15,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Koordinasi pengumpulan data","triwulan":"TW II","bulan":"Apr","output":"Notulen koordinasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":16,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Monitoring pengumpulan data","triwulan":"TW II","bulan":"Mei","output":"Laporan monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":17,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Validasi instrumen lapangan","triwulan":"TW II","bulan":"Jun","output":"Catatan validasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":18,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan draft laporan","triwulan":"TW III","bulan":"Jul","output":"Draft laporan awal","status":"Belum Dimulai","progress":0,"catatan":""},{"id":19,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyempurnaan laporan","triwulan":"TW III","bulan":"Aug","output":"Draft laporan lanjutan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":20,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Finalisasi laporan","triwulan":"TW III","bulan":"Sep","output":"Laporan Subkajian A","status":"Belum Dimulai","progress":0,"catatan":""},{"id":21,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Revisi laporan","triwulan":"TW IV","bulan":"Okt","output":"Laporan revisi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":22,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Final check laporan","triwulan":"TW IV","bulan":"Nov","output":"Laporan final","status":"Belum Dimulai","progress":0,"catatan":""},{"id":23,"pegawai":"Tiksa","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Dokumentasi hasil kajian","triwulan":"TW IV","bulan":"Des","output":"Arsip laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":24,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Persiapan pengumpulan data","triwulan":"TW I","bulan":"Jan","output":"Rencana pengumpulan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":25,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Setup database","triwulan":"TW I","bulan":"Feb","output":"Database awal","status":"Belum Dimulai","progress":0,"catatan":""},{"id":26,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Uji coba pengumpulan data","triwulan":"TW I","bulan":"Mar","output":"Dataset uji coba","status":"Belum Dimulai","progress":0,"catatan":""},{"id":27,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Pengumpulan data tahap 1","triwulan":"TW II","bulan":"Apr","output":"Dataset awal","status":"Belum Dimulai","progress":0,"catatan":""},{"id":28,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Pengumpulan data tahap 2","triwulan":"TW II","bulan":"Mei","output":"Dataset tambahan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":29,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Cleaning data","triwulan":"TW II","bulan":"Jun","output":"Dataset bersih","status":"Belum Dimulai","progress":0,"catatan":""},{"id":30,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyempurnaan dataset","triwulan":"TW III","bulan":"Jul","output":"Dataset final","status":"Belum Dimulai","progress":0,"catatan":""},{"id":31,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Supporting analisis","triwulan":"TW III","bulan":"Aug","output":"Data siap analisis","status":"Belum Dimulai","progress":0,"catatan":""},{"id":32,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Validasi hasil analisis","triwulan":"TW III","bulan":"Sep","output":"Dataset tervalidasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":33,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan lampiran data","triwulan":"TW IV","bulan":"Okt","output":"Lampiran data","status":"Belum Dimulai","progress":0,"catatan":""},{"id":34,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Finalisasi dataset","triwulan":"TW IV","bulan":"Nov","output":"Dataset final","status":"Belum Dimulai","progress":0,"catatan":""},{"id":35,"pegawai":"Atika","proyek":"Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)","kegiatan":"Arsip data","triwulan":"TW IV","bulan":"Des","output":"Arsip dataset","status":"Belum Dimulai","progress":0,"catatan":""},{"id":36,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan model konseptual","triwulan":"TW I","bulan":"Jan","output":"Draft konsep","status":"Belum Dimulai","progress":0,"catatan":""},{"id":37,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Finalisasi model konseptual","triwulan":"TW I","bulan":"Feb","output":"Nota Dinas Model","status":"Belum Dimulai","progress":0,"catatan":""},{"id":38,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Review instrumen","triwulan":"TW I","bulan":"Mar","output":"Catatan review","status":"Belum Dimulai","progress":0,"catatan":""},{"id":39,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Monitoring pengumpulan data","triwulan":"TW II","bulan":"Apr","output":"Laporan monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":40,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Evaluasi data","triwulan":"TW II","bulan":"Mei","output":"Catatan evaluasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":41,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Approval dataset","triwulan":"TW II","bulan":"Jun","output":"Dataset tervalidasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":42,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Analisis awal mediasi","triwulan":"TW III","bulan":"Jul","output":"Draft analisis","status":"Belum Dimulai","progress":0,"catatan":""},{"id":43,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Pendalaman analisis","triwulan":"TW III","bulan":"Aug","output":"Hasil analisis","status":"Belum Dimulai","progress":0,"catatan":""},{"id":44,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan laporan analisis","triwulan":"TW III","bulan":"Sep","output":"Draft laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":45,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan rekomendasi SDM","triwulan":"TW IV","bulan":"Okt","output":"Draft rekomendasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":46,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Finalisasi rekomendasi","triwulan":"TW IV","bulan":"Nov","output":"Nota Dinas Rekomendasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":47,"pegawai":"Elin","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Review laporan akhir","triwulan":"TW IV","bulan":"Des","output":"Laporan siap submit","status":"Belum Dimulai","progress":0,"catatan":""},{"id":48,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan instrumen","triwulan":"TW I","bulan":"Jan","output":"Draft instrumen","status":"Belum Dimulai","progress":0,"catatan":""},{"id":49,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Finalisasi instrumen","triwulan":"TW I","bulan":"Feb","output":"Instrumen final","status":"Belum Dimulai","progress":0,"catatan":""},{"id":50,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Persiapan uji instrumen","triwulan":"TW I","bulan":"Mar","output":"Rencana uji","status":"Belum Dimulai","progress":0,"catatan":""},{"id":51,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Uji validitas","triwulan":"TW II","bulan":"Apr","output":"Hasil uji validitas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":52,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Uji reliabilitas","triwulan":"TW II","bulan":"Mei","output":"Hasil uji reliabilitas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":53,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan nota dinas hasil uji","triwulan":"TW II","bulan":"Jun","output":"Nota Dinas Validitas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":54,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan draft laporan","triwulan":"TW III","bulan":"Jul","output":"Draft laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":55,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Penyempurnaan laporan","triwulan":"TW III","bulan":"Aug","output":"Draft lanjutan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":56,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Finalisasi laporan","triwulan":"TW III","bulan":"Sep","output":"Laporan Subkajian B","status":"Belum Dimulai","progress":0,"catatan":""},{"id":57,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Revisi laporan","triwulan":"TW IV","bulan":"Okt","output":"Laporan revisi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":58,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Final check laporan","triwulan":"TW IV","bulan":"Nov","output":"Laporan final","status":"Belum Dimulai","progress":0,"catatan":""},{"id":59,"pegawai":"Elsa","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Dokumentasi hasil","triwulan":"TW IV","bulan":"Des","output":"Arsip laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":60,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Persiapan pengumpulan data","triwulan":"TW I","bulan":"Jan","output":"Rencana pengumpulan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":61,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Setup database","triwulan":"TW I","bulan":"Feb","output":"Database awal","status":"Belum Dimulai","progress":0,"catatan":""},{"id":62,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Uji coba pengumpulan data","triwulan":"TW I","bulan":"Mar","output":"Dataset uji coba","status":"Belum Dimulai","progress":0,"catatan":""},{"id":63,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Pengumpulan data tahap 1","triwulan":"TW II","bulan":"Apr","output":"Dataset awal","status":"Belum Dimulai","progress":0,"catatan":""},{"id":64,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Pengumpulan data tahap 2","triwulan":"TW II","bulan":"Mei","output":"Dataset tambahan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":65,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Cleaning data","triwulan":"TW II","bulan":"Jun","output":"Dataset bersih","status":"Belum Dimulai","progress":0,"catatan":""},{"id":66,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Penyempurnaan dataset","triwulan":"TW III","bulan":"Jul","output":"Dataset final","status":"Belum Dimulai","progress":0,"catatan":""},{"id":67,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Supporting analisis","triwulan":"TW III","bulan":"Aug","output":"Data siap analisis","status":"Belum Dimulai","progress":0,"catatan":""},{"id":68,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Validasi hasil analisis","triwulan":"TW III","bulan":"Sep","output":"Dataset tervalidasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":69,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Penyusunan lampiran data","triwulan":"TW IV","bulan":"Okt","output":"Lampiran data","status":"Belum Dimulai","progress":0,"catatan":""},{"id":70,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Finalisasi dataset","triwulan":"TW IV","bulan":"Nov","output":"Dataset final","status":"Belum Dimulai","progress":0,"catatan":""},{"id":71,"pegawai":"Ardi","proyek":"Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)","kegiatan":"Arsip data","triwulan":"TW IV","bulan":"Des","output":"Arsip dataset","status":"Belum Dimulai","progress":0,"catatan":""},{"id":72,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Menyusun latar belakang serta dasar kebijakan Program Budaya Kinerja Tahun 2026.","triwulan":"TW I","bulan":"Januari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":73,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Menyusun kebutuhan, alur, dan standar pelaporan Program Budaya Kinerja, yaitu Bimbingan Kinerja Berkelanjutan (BIJAK)","triwulan":"TW I","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":74,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Menyiapkan materi dan konsep visual/desain infografis Program BIJAK","triwulan":"TW I","bulan":"Maret","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":75,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW I","bulan":"April","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":76,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Analisis dan visualisasi data","triwulan":"TW I","bulan":"Mei","output":"Policy Brief","status":"Belum Dimulai","progress":0,"catatan":""},{"id":77,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Menyusun konsep artikel budaya kinerja & BIJAK","triwulan":"TW II","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":78,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW II","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":79,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Analisis dan visualisasi data","triwulan":"TW II","bulan":"Agustus","output":"Policy Brief","status":"Belum Dimulai","progress":0,"catatan":""},{"id":80,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Penetapan tema dan koordinasi dengan Dit. TIK","triwulan":"TW III","bulan":"September","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":81,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW III","bulan":"Oktober","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":82,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Analisis dan visualisasi data","triwulan":"TW III","bulan":"November","output":"Policy Brief","status":"Belum Dimulai","progress":0,"catatan":""},{"id":83,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Menyiapkan materi dan konsep visual/desain infografis Evaluasi Kinerja","triwulan":"TW IV","bulan":"Desember","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":84,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW IV","bulan":"Januari","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":85,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Analisis dan visualisasi data","triwulan":"TW IV","bulan":"Februari","output":"Policy Brief","status":"Belum Dimulai","progress":0,"catatan":""},{"id":86,"pegawai":"Tiksa","proyek":"BIJAK 2026","kegiatan":"Melakukan reviu dan penyusunan dokumen final","triwulan":"TW IV","bulan":"Maret","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":87,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Merumuskan tujuan dan indikator Program Budaya Kinerja 2026.","triwulan":"TW I","bulan":"April","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":88,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Mengelola arsip, dokumentasi, dan kerapihan administrasi pelaporan program","triwulan":"TW I","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":89,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Menyiapkan materi dan konsep visual/desain infografis Program BIJAK","triwulan":"TW I","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":90,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW I","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":91,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Penyampaian laporan melalui Nadine","triwulan":"TW I","bulan":"Agustus","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":92,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Koordinasi redaksi, persetujuan pimpinan","triwulan":"TW II","bulan":"September","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":93,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW II","bulan":"Oktober","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":94,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Analisis dan visualisasi data","triwulan":"TW II","bulan":"November","output":"Policy Brief","status":"Belum Dimulai","progress":0,"catatan":""},{"id":95,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Menyiapkan materi dan konsep visual/desain infografis Manajemen Kinerja","triwulan":"TW III","bulan":"Desember","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":96,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW III","bulan":"Januari","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":97,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Penyampaian laporan melalui Nadine","triwulan":"TW III","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":98,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Penyampaian nota dinas permohonan penayangan","triwulan":"TW IV","bulan":"Maret","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":99,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW IV","bulan":"April","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":100,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Analisis dan visualisasi data","triwulan":"TW IV","bulan":"Mei","output":"Policy Brief","status":"Belum Dimulai","progress":0,"catatan":""},{"id":101,"pegawai":"Atika","proyek":"BIJAK 2026","kegiatan":"Menyusun latar belakang dan resume pelaksanaan","triwulan":"TW IV","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":102,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Menyusun kerangka monitoring dan evaluasi Program Budaya Kinerja 2026","triwulan":"TW I","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":103,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Menyiapkan dan mengelola media pelaporan (form dan dashboard monitoring)","triwulan":"TW I","bulan":"Agustus","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":104,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Menyiapkan materi dalam pohon URL yang akan ditampilkan dalam infografis","triwulan":"TW I","bulan":"September","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":105,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW I","bulan":"Oktober","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":106,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Rekap laporan dan feedback","triwulan":"TW I","bulan":"November","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":107,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Menyiapkan bahan dari materi buku coaching for performance","triwulan":"TW II","bulan":"Desember","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":108,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW II","bulan":"Januari","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":109,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Rekap laporan dan feedback","triwulan":"TW II","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":110,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Menyiapkan materi dan konsep visual/desain infografis Manajemen Kinerja","triwulan":"TW III","bulan":"Maret","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":111,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW III","bulan":"April","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":112,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Rekap laporan dan feedback","triwulan":"TW III","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":113,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Penetapan tema dan koordinasi dengan Dit. TIK","triwulan":"TW IV","bulan":"Juni","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":114,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW IV","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":115,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Rekap laporan dan feedback","triwulan":"TW IV","bulan":"Agustus","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":116,"pegawai":"Elna","proyek":"BIJAK 2026","kegiatan":"Penyedia data rekap monitoring dan analisis data","triwulan":"TW IV","bulan":"September","output":"Policy Brief","status":"Belum Dimulai","progress":0,"catatan":""},{"id":117,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Menyusun rencana kegiatan Budaya Kinerja Tahun 2026 per triwulan","triwulan":"TW I","bulan":"Oktober","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":118,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Mengintegrasikan data pelaporan Budaya Kinerja dan BIJAK untuk kebutuhan monitoring dan evaluasi","triwulan":"TW I","bulan":"November","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":119,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Mengkoordinasikan penayangan infografis Program BIJAK pada media internal","triwulan":"TW I","bulan":"Desember","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":120,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW I","bulan":"Januari","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":121,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Rekap laporan dan feedback","triwulan":"TW I","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":122,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Review substansi artikel","triwulan":"TW II","bulan":"Maret","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":123,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW II","bulan":"April","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":124,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Rekap laporan dan feedback","triwulan":"TW II","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":125,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Penetapan tema dan koordinasi dengan Dit. TIK","triwulan":"TW III","bulan":"Juni","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":126,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW III","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":127,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Rekap laporan dan feedback","triwulan":"TW III","bulan":"Agustus","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":128,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Menyiapkan materi dan konsep visual/desain infografis Evaluasi Kinerja","triwulan":"TW IV","bulan":"September","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":129,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW IV","bulan":"Oktober","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":130,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Rekap laporan dan feedback","triwulan":"TW IV","bulan":"November","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":131,"pegawai":"Iman","proyek":"BIJAK 2026","kegiatan":"Analisis data, kesimpulan & rekomendasi","triwulan":"TW IV","bulan":"Desember","output":"Policy Brief","status":"Belum Dimulai","progress":0,"catatan":""},{"id":132,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Menyusun nota dinas penyampaian program Budaya Kinerja 2026","triwulan":"TW I","bulan":"Januari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":133,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Menyusun format laporan, instrumen monitoring, dan mekanisme pengumpulan data","triwulan":"TW I","bulan":"Februari","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":134,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Menyusun nota dinas permohonan penayangan infografis","triwulan":"TW I","bulan":"Maret","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":135,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW I","bulan":"April","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":136,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Rekap laporan dan feedback","triwulan":"TW I","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":137,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Penyampaian artikel pada pihak terkait","triwulan":"TW II","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":138,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW II","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":139,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Penyampaian laporan melalui Nadine","triwulan":"TW II","bulan":"Agustus","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":140,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Penyampaian nota dinas permohonan penayangan","triwulan":"TW III","bulan":"September","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":141,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW III","bulan":"Oktober","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":142,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Analisis dan visualisasi data","triwulan":"TW III","bulan":"November","output":"Policy Brief","status":"Belum Dimulai","progress":0,"catatan":""},{"id":143,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Penetapan tema dan koordinasi dengan Dit. TIK","triwulan":"TW IV","bulan":"Desember","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":144,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Monitoring, reminder, dan asistensi pelaksanaan BIJAK sesuai pembagian unit","triwulan":"TW IV","bulan":"Januari","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":145,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Penyusunan naskah laporan","triwulan":"TW IV","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":146,"pegawai":"Nila","proyek":"BIJAK 2026","kegiatan":"Finalisasi laporan dan penyampaian melalui nota dinas","triwulan":"TW IV","bulan":"Maret","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":147,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Perumusan KPI dan framework employee scorecard","triwulan":"Triwulan I","bulan":"Januari","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":148,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Pengumpulan data dan benchmarking","triwulan":"Triwulan I","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":149,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan indikator kinerja","triwulan":"Triwulan I","bulan":"Maret","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":150,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Validasi indikator dengan stakeholder","triwulan":"Triwulan II","bulan":"April","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":151,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan metodologi scorecard","triwulan":"Triwulan II","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":152,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan draft awal scorecard","triwulan":"Triwulan II","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":153,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Uji coba (pilot) employee scorecard","triwulan":"Triwulan III","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":154,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Evaluasi hasil pilot","triwulan":"Triwulan III","bulan":"Agustus","output":"Laporan Evaluasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":155,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan final scorecard","triwulan":"Triwulan III","bulan":"September","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":156,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan pedoman implementasi","triwulan":"Triwulan IV","bulan":"Oktober","output":"Pedoman","status":"Belum Dimulai","progress":0,"catatan":""},{"id":157,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Sosialisasi employee scorecard","triwulan":"Triwulan IV","bulan":"November","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":158,"pegawai":"Iman","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Finalisasi dan pelaporan","triwulan":"Triwulan IV","bulan":"Desember","output":"Laporan Akhir","status":"Belum Dimulai","progress":0,"catatan":""},{"id":159,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Perumusan KPI dan framework employee scorecard","triwulan":"Triwulan I","bulan":"Januari","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":160,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Pengumpulan data dan benchmarking","triwulan":"Triwulan I","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":161,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan indikator kinerja","triwulan":"Triwulan I","bulan":"Maret","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":162,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Validasi indikator dengan stakeholder","triwulan":"Triwulan II","bulan":"April","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":163,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan metodologi scorecard","triwulan":"Triwulan II","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":164,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan draft awal scorecard","triwulan":"Triwulan II","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":165,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Uji coba (pilot) employee scorecard","triwulan":"Triwulan III","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":166,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Evaluasi hasil pilot","triwulan":"Triwulan III","bulan":"Agustus","output":"Laporan Evaluasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":167,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan final scorecard","triwulan":"Triwulan III","bulan":"September","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":168,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan pedoman implementasi","triwulan":"Triwulan IV","bulan":"Oktober","output":"Pedoman","status":"Belum Dimulai","progress":0,"catatan":""},{"id":169,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Sosialisasi employee scorecard","triwulan":"Triwulan IV","bulan":"November","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":170,"pegawai":"Tiksa","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Finalisasi dan pelaporan","triwulan":"Triwulan IV","bulan":"Desember","output":"Laporan Akhir","status":"Belum Dimulai","progress":0,"catatan":""},{"id":171,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Perumusan KPI dan framework employee scorecard","triwulan":"Triwulan I","bulan":"Januari","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":172,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Pengumpulan data dan benchmarking","triwulan":"Triwulan I","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":173,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan indikator kinerja","triwulan":"Triwulan I","bulan":"Maret","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":174,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Validasi indikator dengan stakeholder","triwulan":"Triwulan II","bulan":"April","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":175,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan metodologi scorecard","triwulan":"Triwulan II","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":176,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan draft awal scorecard","triwulan":"Triwulan II","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":177,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Uji coba (pilot) employee scorecard","triwulan":"Triwulan III","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":178,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Evaluasi hasil pilot","triwulan":"Triwulan III","bulan":"Agustus","output":"Laporan Evaluasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":179,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan final scorecard","triwulan":"Triwulan III","bulan":"September","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":180,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan pedoman implementasi","triwulan":"Triwulan IV","bulan":"Oktober","output":"Pedoman","status":"Belum Dimulai","progress":0,"catatan":""},{"id":181,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Sosialisasi employee scorecard","triwulan":"Triwulan IV","bulan":"November","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":182,"pegawai":"Atika","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Finalisasi dan pelaporan","triwulan":"Triwulan IV","bulan":"Desember","output":"Laporan Akhir","status":"Belum Dimulai","progress":0,"catatan":""},{"id":183,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Perumusan KPI dan framework employee scorecard","triwulan":"Triwulan I","bulan":"Januari","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":184,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Pengumpulan data dan benchmarking","triwulan":"Triwulan I","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":185,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan indikator kinerja","triwulan":"Triwulan I","bulan":"Maret","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":186,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Validasi indikator dengan stakeholder","triwulan":"Triwulan II","bulan":"April","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":187,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan metodologi scorecard","triwulan":"Triwulan II","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":188,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan draft awal scorecard","triwulan":"Triwulan II","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":189,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Uji coba (pilot) employee scorecard","triwulan":"Triwulan III","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":190,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Evaluasi hasil pilot","triwulan":"Triwulan III","bulan":"Agustus","output":"Laporan Evaluasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":191,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan final scorecard","triwulan":"Triwulan III","bulan":"September","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":192,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan pedoman implementasi","triwulan":"Triwulan IV","bulan":"Oktober","output":"Pedoman","status":"Belum Dimulai","progress":0,"catatan":""},{"id":193,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Sosialisasi employee scorecard","triwulan":"Triwulan IV","bulan":"November","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":194,"pegawai":"Elna","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Finalisasi dan pelaporan","triwulan":"Triwulan IV","bulan":"Desember","output":"Laporan Akhir","status":"Belum Dimulai","progress":0,"catatan":""},{"id":195,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Perumusan KPI dan framework employee scorecard","triwulan":"Triwulan I","bulan":"Januari","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":196,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Pengumpulan data dan benchmarking","triwulan":"Triwulan I","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":197,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan indikator kinerja","triwulan":"Triwulan I","bulan":"Maret","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":198,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Validasi indikator dengan stakeholder","triwulan":"Triwulan II","bulan":"April","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":199,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan metodologi scorecard","triwulan":"Triwulan II","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":200,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan draft awal scorecard","triwulan":"Triwulan II","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":201,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Uji coba (pilot) employee scorecard","triwulan":"Triwulan III","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":202,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Evaluasi hasil pilot","triwulan":"Triwulan III","bulan":"Agustus","output":"Laporan Evaluasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":203,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan final scorecard","triwulan":"Triwulan III","bulan":"September","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":204,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan pedoman implementasi","triwulan":"Triwulan IV","bulan":"Oktober","output":"Pedoman","status":"Belum Dimulai","progress":0,"catatan":""},{"id":205,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Sosialisasi employee scorecard","triwulan":"Triwulan IV","bulan":"November","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":206,"pegawai":"Ardi","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Finalisasi dan pelaporan","triwulan":"Triwulan IV","bulan":"Desember","output":"Laporan Akhir","status":"Belum Dimulai","progress":0,"catatan":""},{"id":207,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Perumusan KPI dan framework employee scorecard","triwulan":"Triwulan I","bulan":"Januari","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":208,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Pengumpulan data dan benchmarking","triwulan":"Triwulan I","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":209,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan indikator kinerja","triwulan":"Triwulan I","bulan":"Maret","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":210,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Validasi indikator dengan stakeholder","triwulan":"Triwulan II","bulan":"April","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":211,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan metodologi scorecard","triwulan":"Triwulan II","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":212,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan draft awal scorecard","triwulan":"Triwulan II","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":213,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Uji coba (pilot) employee scorecard","triwulan":"Triwulan III","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":214,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Evaluasi hasil pilot","triwulan":"Triwulan III","bulan":"Agustus","output":"Laporan Evaluasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":215,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan final scorecard","triwulan":"Triwulan III","bulan":"September","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":216,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan pedoman implementasi","triwulan":"Triwulan IV","bulan":"Oktober","output":"Pedoman","status":"Belum Dimulai","progress":0,"catatan":""},{"id":217,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Sosialisasi employee scorecard","triwulan":"Triwulan IV","bulan":"November","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":218,"pegawai":"Joko","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Finalisasi dan pelaporan","triwulan":"Triwulan IV","bulan":"Desember","output":"Laporan Akhir","status":"Belum Dimulai","progress":0,"catatan":""},{"id":219,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Perumusan KPI dan framework employee scorecard","triwulan":"Triwulan I","bulan":"Januari","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":220,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Pengumpulan data dan benchmarking","triwulan":"Triwulan I","bulan":"Februari","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":221,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan indikator kinerja","triwulan":"Triwulan I","bulan":"Maret","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":222,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Validasi indikator dengan stakeholder","triwulan":"Triwulan II","bulan":"April","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":223,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan metodologi scorecard","triwulan":"Triwulan II","bulan":"Mei","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":224,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan draft awal scorecard","triwulan":"Triwulan II","bulan":"Juni","output":"Laporan","status":"Belum Dimulai","progress":0,"catatan":""},{"id":225,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Uji coba (pilot) employee scorecard","triwulan":"Triwulan III","bulan":"Juli","output":"Laporan Monitoring","status":"Belum Dimulai","progress":0,"catatan":""},{"id":226,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Evaluasi hasil pilot","triwulan":"Triwulan III","bulan":"Agustus","output":"Laporan Evaluasi","status":"Belum Dimulai","progress":0,"catatan":""},{"id":227,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyempurnaan final scorecard","triwulan":"Triwulan III","bulan":"September","output":"Laporan Kajian","status":"Belum Dimulai","progress":0,"catatan":""},{"id":228,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Penyusunan pedoman implementasi","triwulan":"Triwulan IV","bulan":"Oktober","output":"Pedoman","status":"Belum Dimulai","progress":0,"catatan":""},{"id":229,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Sosialisasi employee scorecard","triwulan":"Triwulan IV","bulan":"November","output":"Nota Dinas","status":"Belum Dimulai","progress":0,"catatan":""},{"id":230,"pegawai":"Nila","proyek":"Penyusunan Employee Scorecard DJP","kegiatan":"Finalisasi dan pelaporan","triwulan":"Triwulan IV","bulan":"Desember","output":"Laporan Akhir","status":"Belum Dimulai","progress":0,"catatan":""}];
+
+// =========================================================
+// PASSWORDS (stored in localStorage, editable by admin)
+// =========================================================
+const DEFAULT_PASSWORDS = {
+  admin:'Admin@DJP2026',Elna:'Elna2026',Tiksa:'Tiksa2026',Atika:'Atika2026',
+  Elin:'Elin2026',Elsa:'Elsa2026',Ardi:'Ardi2026',Iman:'Iman2026',Nila:'Nila2026',Joko:'Joko2026'
+};
+
+const COLORS = {
+  Elna:'#2d5a8e',Tiksa:'#1d7a5a',Atika:'#7a4a9e',Elin:'#b05a7a',
+  Elsa:'#b05a7a',Ardi:'#3a8a5a',Iman:'#b87a00',Nila:'#b85c00',Joko:'#5a6a7a',admin:'#1a2e45'
+};
+
+const PROYEK_SHORT = {
+  'Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)':'Kajian Penempatan AR',
+  'Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)':'Kajian WFC & Wellbeing',
+  'BIJAK 2026':'BIJAK 2026',
+  'Penyusunan Employee Scorecard DJP':'Employee Scorecard DJP'
+};
+
+// =========================================================
+// STATE
+// =========================================================
+let currentUser = null;
+let isAdmin = false;
+let tasks = [];
+let passwords = {};
+let noteTargetId = null;
+let userModalTarget = null;
+
+function loadState(){
+  const saved = localStorage.getItem('djp_tasks_2026');
+  tasks = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(INITIAL_DATA));
+  const savedPwd = localStorage.getItem('djp_passwords_2026');
+  passwords = savedPwd ? JSON.parse(savedPwd) : {...DEFAULT_PASSWORDS};
+}
+function saveState(){
+  localStorage.setItem('djp_tasks_2026', JSON.stringify(tasks));
+  localStorage.setItem('djp_passwords_2026', JSON.stringify(passwords));
+}
+
+// =========================================================
+// AUTH
+// =========================================================
+function doLogin(){
+  const user = document.getElementById('sel-user').value;
+  const pwd = document.getElementById('inp-password').value;
+  if(!user){showLoginError('Pilih pengguna terlebih dahulu.');return;}
+  loadState();
+  if(passwords[user] !== pwd){showLoginError('Password salah.');return;}
+  currentUser = user;
+  isAdmin = (user === 'admin');
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  setupUI();
+  showPage('overview');
+}
+document.getElementById('inp-password').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+function showLoginError(msg){
+  const el=document.getElementById('login-error');
+  el.textContent=msg;el.style.display='block';
+  setTimeout(()=>el.style.display='none',3500);
+}
+
+function doLogout(){
+  currentUser=null;isAdmin=false;
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('inp-password').value='';
+  document.getElementById('sel-user').value='';
+}
+
+// =========================================================
+// UI SETUP
+// =========================================================
+function setupUI(){
+  const color = COLORS[currentUser]||'#2d5a8e';
+  const initials = currentUser==='admin'?'AD':currentUser.substring(0,2).toUpperCase();
+  document.getElementById('top-avatar').style.background=color;
+  document.getElementById('top-avatar').textContent=initials;
+  document.getElementById('top-name').textContent=currentUser==='admin'?'Administrator':currentUser;
+  const rb=document.getElementById('top-role');
+  rb.textContent=isAdmin?'Admin':'Pegawai';
+  rb.className='role-badge '+(isAdmin?'role-admin':'role-user');
+  document.getElementById('nav-admin').style.display=isAdmin?'flex':'none';
+  document.getElementById('nav-mywork').style.display=isAdmin?'none':'flex';
+
+  // Populate filters
+  const emps=['Elna','Tiksa','Atika','Elin','Elsa','Ardi','Iman','Nila','Joko'];
+  const projs=[...new Set(tasks.map(t=>t.proyek))];
+  ['f-pegawai','af-pegawai'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.innerHTML='<option value="">Semua Pegawai</option>';
+    emps.forEach(e=>el.innerHTML+=`<option>${e}</option>`);
+  });
+  ['f-proyek','af-proyek','mf-proyek'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.innerHTML='<option value="">Semua Proyek</option>';
+    projs.forEach(p=>el.innerHTML+=`<option value="${p}">${PROYEK_SHORT[p]||p}</option>`);
+  });
+  renderOverview();
+  renderEmployees();
+  if(!isAdmin) renderMyWork();
+  if(isAdmin) renderAdminPanel();
+}
+
+// =========================================================
+// NAVIGATION
+// =========================================================
+function showPage(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  const navMap={overview:'overview',tasks:'tasks',employees:'employees',mywork:'mywork',admin:'admin'};
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    if(el.getAttribute('onclick')&&el.getAttribute('onclick').includes("'"+p+"'"))el.classList.add('active');
+  });
+  if(p==='tasks')renderTasks();
+  if(p==='overview')renderOverview();
+  if(p==='employees')renderEmployees();
+  if(p==='mywork')renderMyWork();
+  if(p==='admin'){renderAdminPanel();renderAdminTasks();}
+}
+
+// =========================================================
+// HELPERS
+// =========================================================
+function twBadge(tw){
+  const map={'TW I':'tw1','TW II':'tw2','TW III':'tw3','TW IV':'tw4','Triwulan I':'tw1','Triwulan II':'tw2','Triwulan III':'tw3','Triwulan IV':'tw4'};
+  return `<span class="badge badge-${map[tw]||'tw1'}">${tw}</span>`;
+}
+function statusBadge(s){
+  const map={'Belum Dimulai':'belum','Sedang Berjalan':'proses','Selesai':'selesai'};
+  return `<span class="badge badge-${map[s]||'belum'}">${s}</span>`;
+}
+function progBar(pct,color='#2d5a8e'){
+  return `<div class="prog-bar-wrap"><div class="prog-bar-track"><div class="prog-bar-fill" style="width:${pct}%;background:${color}"></div></div><span class="prog-pct">${Math.round(pct)}%</span></div>`;
+}
+function shortProj(p){return PROYEK_SHORT[p]||p}
+function canEdit(row){return isAdmin||row.pegawai===currentUser}
+
+// =========================================================
+// TASK ROW HTML
+// =========================================================
+function taskRowHTML(t, showPegawai=true){
+  const editable=canEdit(t);
+  const sOpts=['Belum Dimulai','Sedang Berjalan','Selesai'].map(s=>`<option${t.status===s?' selected':''}>${s}</option>`).join('');
+  const hasNote=t.catatan&&t.catatan.trim().length>0;
+  return `<tr>
+    ${showPegawai?`<td><span style="font-weight:500;color:${COLORS[t.pegawai]||'#333'}">${t.pegawai}</span></td>`:''}
+    <td class="muted" style="font-size:12px;max-width:140px">${shortProj(t.proyek)}</td>
+    <td style="max-width:220px;font-size:13px">${t.kegiatan}</td>
+    <td>${twBadge(t.triwulan)}</td>
+    <td class="muted">${t.bulan}</td>
+    <td class="muted" style="font-size:12px">${t.output}</td>
+    <td><select class="status-select" id="status-${t.id}" ${editable?'':'disabled'}>${sOpts}</select></td>
+    <td style="min-width:120px">
+      <div style="display:flex;align-items:center;gap:6px">
+        <input type="number" class="progress-input" id="prog-${t.id}" min="0" max="100" value="${t.progress}" ${editable?'':'disabled'}>
+        <div class="prog-bar-track" style="min-width:50px"><div class="prog-bar-fill" id="progbar-${t.id}" style="width:${t.progress}%;background:${COLORS[t.pegawai]||'#2d5a8e'}"></div></div>
+      </div>
+    </td>
+    <td>
+      <button class="note-btn" onclick="openNote(${t.id})" ${editable?'':'disabled'} title="${t.catatan||'Tidak ada catatan'}">
+        ${hasNote?'✏️ Edit':'+ Tambah'}
+      </button>
+    </td>
+    <td>
+      ${editable?`<button class="save-btn" onclick="saveRow(${t.id})">Simpan</button>`:'<span style="font-size:11px;color:var(--text3)">—</span>'}
+    </td>
+  </tr>`;
+}
+
+// =========================================================
+// SAVE ROW
+// =========================================================
+function saveRow(id){
+  const t=tasks.find(x=>x.id===id);
+  if(!t||!canEdit(t))return;
+  t.status=document.getElementById('status-'+id).value;
+  const p=parseInt(document.getElementById('prog-'+id).value)||0;
+  t.progress=Math.min(100,Math.max(0,p));
+  document.getElementById('prog-'+id).value=t.progress;
+  const bar=document.getElementById('progbar-'+id);
+  if(bar)bar.style.width=t.progress+'%';
+  saveState();
+  showToast('Disimpan: '+t.kegiatan.substring(0,40)+'...');
+  renderOverview();
+  renderEmployees();
+}
+
+// =========================================================
+// NOTE MODAL
+// =========================================================
+function openNote(id){
+  const t=tasks.find(x=>x.id===id);
+  if(!t||!canEdit(t))return;
+  noteTargetId=id;
+  document.getElementById('note-modal-sub').textContent=t.kegiatan;
+  document.getElementById('note-textarea').value=t.catatan||'';
+  document.getElementById('note-modal').classList.add('open');
+}
+function closeNote(){document.getElementById('note-modal').classList.remove('open');noteTargetId=null}
+function saveNote(){
+  if(noteTargetId===null)return;
+  const t=tasks.find(x=>x.id===noteTargetId);
+  t.catatan=document.getElementById('note-textarea').value;
+  saveState();closeNote();
+  renderTasks();renderMyWork();renderAdminTasks();
+  showToast('Catatan disimpan');
+}
+
+// =========================================================
+// OVERVIEW
+// =========================================================
+function renderOverview(){
+  const total=tasks.length;
+  const selesai=tasks.filter(t=>t.status==='Selesai').length;
+  const berjalan=tasks.filter(t=>t.status==='Sedang Berjalan').length;
+  const avgProg=Math.round(tasks.reduce((a,t)=>a+t.progress,0)/total);
+  document.getElementById('overview-metrics').innerHTML=`
+    <div class="metric-card"><div class="metric-label">Total Kegiatan</div><div class="metric-val">${total}</div><div class="metric-sub">231 kegiatan sepanjang 2026</div></div>
+    <div class="metric-card"><div class="metric-label">Selesai</div><div class="metric-val" style="color:var(--success)">${selesai}</div><div class="metric-sub">${Math.round(selesai/total*100)}% dari total</div></div>
+    <div class="metric-card"><div class="metric-label">Sedang Berjalan</div><div class="metric-val" style="color:var(--accent)">${berjalan}</div><div class="metric-sub">aktif saat ini</div></div>
+    <div class="metric-card"><div class="metric-label">Rata-rata Progress</div><div class="metric-val">${avgProg}%</div><div class="metric-sub">seluruh unit</div></div>
+  `;
+
+  const projs=[...new Set(tasks.map(t=>t.proyek))];
+  const projColors={'Kajian Dampak Lokasi Penempatan terhadap Kinerja Account Representative (AR)':'#2d5a8e','Kajian Peran Work-Family Conflict (WFC) dan Wellbeing terhadap Kinerja Account Representative (AR)':'#1d7a5a','BIJAK 2026':'#b87a00','Penyusunan Employee Scorecard DJP':'#7a4a9e'};
+  document.getElementById('overview-projs').innerHTML=projs.map(p=>{
+    const pt=tasks.filter(t=>t.proyek===p);
+    const avg=Math.round(pt.reduce((a,t)=>a+t.progress,0)/pt.length);
+    const members=[...new Set(pt.map(t=>t.pegawai))].join(', ');
+    const col=projColors[p]||'#2d5a8e';
+    return `<div class="proj-card">
+      <div class="proj-card-name">${shortProj(p)}</div>
+      <div class="proj-card-members">${members}</div>
+      <div class="proj-card-bar"><div class="proj-card-bar-fill" style="width:${avg}%;background:${col}"></div></div>
+      <div class="proj-card-pct">${avg}% selesai · ${pt.length} kegiatan</div>
+    </div>`;
+  }).join('');
+
+  const emps=['Elna','Tiksa','Atika','Elin','Elsa','Ardi','Iman','Nila','Joko'];
+  const maxTasks=Math.max(...emps.map(e=>tasks.filter(t=>t.pegawai===e).length));
+  document.getElementById('overview-emp-bars').innerHTML=emps.map(e=>{
+    const et=tasks.filter(t=>t.pegawai===e);
+    const avg=Math.round(et.reduce((a,t)=>a+t.progress,0)/et.length);
+    const done=et.filter(t=>t.status==='Selesai').length;
+    const col=COLORS[e]||'#2d5a8e';
+    return `<div style="display:grid;grid-template-columns:80px 1fr 120px;align-items:center;gap:12px;margin-bottom:10px">
+      <div style="font-size:13px;font-weight:500;color:${col};text-align:right">${e}</div>
+      <div class="prog-bar-track" style="height:10px"><div class="prog-bar-fill" style="width:${avg}%;background:${col}"></div></div>
+      <div style="font-size:12px;color:var(--text3)">${avg}% · ${done}/${et.length} selesai</div>
+    </div>`;
+  }).join('');
+}
+
+// =========================================================
+// TASKS TABLE
+// =========================================================
+function renderTasks(){
+  const peg=document.getElementById('f-pegawai').value;
+  const proj=document.getElementById('f-proyek').value;
+  const tw=document.getElementById('f-tw').value;
+  const stat=document.getElementById('f-status').value;
+  const q=document.getElementById('f-search').value.toLowerCase();
+  let data=tasks.filter(t=>
+    (!peg||t.pegawai===peg)&&
+    (!proj||t.proyek===proj)&&
+    (!tw||t.triwulan===tw)&&
+    (!stat||t.status===stat)&&
+    (!q||t.kegiatan.toLowerCase().includes(q)||t.output.toLowerCase().includes(q))
+  );
+  document.getElementById('task-count').textContent=`${data.length} kegiatan`;
+  document.getElementById('task-tbody').innerHTML=data.map(t=>taskRowHTML(t,true)).join('');
+}
+
+// =========================================================
+// MY WORK
+// =========================================================
+function renderMyWork(){
+  if(isAdmin)return;
+  const myTasks=tasks.filter(t=>t.pegawai===currentUser);
+  const proj=document.getElementById('mf-proyek').value;
+  const stat=document.getElementById('mf-status').value;
+  const data=myTasks.filter(t=>(!proj||t.proyek===proj)&&(!stat||t.status===stat));
+  document.getElementById('mywork-sub').textContent=`${currentUser} · ${myTasks.length} kegiatan total`;
+  document.getElementById('mywork-count').textContent=`${data.length} kegiatan`;
+  document.getElementById('mywork-tbody').innerHTML=data.map(t=>{
+    const sOpts=['Belum Dimulai','Sedang Berjalan','Selesai'].map(s=>`<option${t.status===s?' selected':''}>${s}</option>`).join('');
+    const hasNote=t.catatan&&t.catatan.trim().length>0;
+    return `<tr>
+      <td class="muted" style="font-size:12px;max-width:140px">${shortProj(t.proyek)}</td>
+      <td style="max-width:220px">${t.kegiatan}</td>
+      <td>${twBadge(t.triwulan)}</td>
+      <td class="muted">${t.bulan}</td>
+      <td class="muted" style="font-size:12px">${t.output}</td>
+      <td><select class="status-select" id="status-${t.id}">${sOpts}</select></td>
+      <td style="min-width:120px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <input type="number" class="progress-input" id="prog-${t.id}" min="0" max="100" value="${t.progress}">
+          <div class="prog-bar-track" style="min-width:50px"><div class="prog-bar-fill" id="progbar-${t.id}" style="width:${t.progress}%;background:${COLORS[currentUser]||'#2d5a8e'}"></div></div>
+        </div>
+      </td>
+      <td><button class="note-btn" onclick="openNote(${t.id})">${hasNote?'✏️ Edit':'+ Tambah'}</button></td>
+      <td><button class="save-btn" onclick="saveRow(${t.id})">Simpan</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// =========================================================
+// EMPLOYEES
+// =========================================================
+function renderEmployees(){
+  const emps=['Elna','Tiksa','Atika','Elin','Elsa','Ardi','Iman','Nila','Joko'];
+  const maxTasks=Math.max(...emps.map(e=>tasks.filter(t=>t.pegawai===e).length));
+  document.getElementById('emp-grid').innerHTML=emps.map(e=>{
+    const et=tasks.filter(t=>t.pegawai===e);
+    const avg=Math.round(et.reduce((a,t)=>a+t.progress,0)/et.length);
+    const done=et.filter(t=>t.status==='Selesai').length;
+    const inprog=et.filter(t=>t.status==='Sedang Berjalan').length;
+    const projs=[...new Set(et.map(t=>shortProj(t.proyek)))];
+    const col=COLORS[e]||'#2d5a8e';
+    return `<div class="emp-card">
+      <div class="emp-card-hdr">
+        <div class="emp-av" style="background:${col}">${e.substring(0,2).toUpperCase()}</div>
+        <div>
+          <div class="emp-card-name">${e}</div>
+          <div class="emp-card-count">${et.length} kegiatan · ${projs.length} proyek</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:6px">${projs.join(' · ')}</div>
+      <div class="emp-card-bar"><div class="emp-bar-fill" style="width:${avg}%;background:${col}"></div></div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:8px">${avg}% rata-rata progress</div>
+      <div class="emp-card-stats">
+        <div class="emp-stat"><div class="emp-stat-val" style="color:var(--success)">${done}</div><div class="emp-stat-label">Selesai</div></div>
+        <div class="emp-stat"><div class="emp-stat-val" style="color:var(--accent)">${inprog}</div><div class="emp-stat-label">Berjalan</div></div>
+        <div class="emp-stat"><div class="emp-stat-val">${et.length-done-inprog}</div><div class="emp-stat-label">Belum Mulai</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// =========================================================
+// ADMIN PANEL
+// =========================================================
+function renderAdminPanel(){
+  const users=['admin','Elna','Tiksa','Atika','Elin','Elsa','Ardi','Iman','Nila','Joko'];
+  document.getElementById('user-manage-list').innerHTML=users.map(u=>{
+    const col=COLORS[u]||'#333';
+    const init=u==='admin'?'AD':u.substring(0,2).toUpperCase();
+    return `<div class="user-manage-row">
+      <div class="um-av" style="background:${col}">${init}</div>
+      <div class="um-name">${u==='admin'?'Administrator':u}</div>
+      <div class="um-pwd">${passwords[u]}</div>
+      <span class="role-badge ${u==='admin'?'role-admin':'role-user'} um-role">${u==='admin'?'Admin':'Pegawai'}</span>
+      <button class="btn-edit-user" onclick="openUserModal('${u}')">Edit</button>
+    </div>`;
+  }).join('');
+
+  const total=tasks.length;
+  const selesai=tasks.filter(t=>t.status==='Selesai').length;
+  const berjalan=tasks.filter(t=>t.status==='Sedang Berjalan').length;
+  const belum=tasks.filter(t=>t.status==='Belum Dimulai').length;
+  const berCatatan=tasks.filter(t=>t.catatan&&t.catatan.trim()).length;
+  document.getElementById('admin-stats').innerHTML=`
+    Total kegiatan: <strong>${total}</strong><br>
+    Selesai: <strong>${selesai}</strong> (${Math.round(selesai/total*100)}%)<br>
+    Sedang berjalan: <strong>${berjalan}</strong><br>
+    Belum dimulai: <strong>${belum}</strong><br>
+    Memiliki catatan: <strong>${berCatatan}</strong>
+  `;
+}
+
+function renderAdminTasks(){
+  if(!isAdmin)return;
+  const peg=document.getElementById('af-pegawai').value;
+  const proj=document.getElementById('af-proyek').value;
+  const stat=document.getElementById('af-status').value;
+  let data=tasks.filter(t=>(!peg||t.pegawai===peg)&&(!proj||t.proyek===proj)&&(!stat||t.status===stat));
+  document.getElementById('admin-tbody').innerHTML=data.map(t=>taskRowHTML(t,true)).join('');
+}
+
+function openUserModal(u){
+  userModalTarget=u;
+  document.getElementById('user-modal-sub').textContent=`Pengguna: ${u==='admin'?'Administrator':u}`;
+  document.getElementById('user-modal-pwd').value=passwords[u]||'';
+  document.getElementById('user-modal').classList.add('open');
+}
+function closeUserModal(){document.getElementById('user-modal').classList.remove('open');userModalTarget=null}
+function saveUserPwd(){
+  if(!userModalTarget)return;
+  const np=document.getElementById('user-modal-pwd').value.trim();
+  if(!np){showToast('Password tidak boleh kosong');return;}
+  passwords[userModalTarget]=np;
+  saveState();closeUserModal();renderAdminPanel();
+  showToast(`Password ${userModalTarget} diperbarui`);
+}
+
+function adminExport(){
+  const blob=new Blob([JSON.stringify({tasks,passwords,exported:new Date().toISOString()},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='djp_dashboard_data.json';a.click();
+  showToast('Data diekspor sebagai JSON');
+}
+function adminResetAllProgress(){
+  if(!confirm('Reset semua progress ke 0%?'))return;
+  tasks.forEach(t=>t.progress=0);saveState();renderOverview();renderEmployees();renderAdminTasks();
+  showToast('Semua progress direset ke 0%');
+}
+function adminResetAllStatus(){
+  if(!confirm('Reset semua status ke "Belum Dimulai"?'))return;
+  tasks.forEach(t=>{t.status='Belum Dimulai';t.progress=0});saveState();renderOverview();renderEmployees();renderAdminTasks();
+  showToast('Semua status direset');
+}
+
+// =========================================================
+// TOAST
+// =========================================================
+let toastTimer=null;
+function showToast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2500);
+}
+
+// Close modals on overlay click
+document.getElementById('note-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeNote()});
+document.getElementById('user-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeUserModal()});
+
+loadState();
+</script>
+</body>
+</html>
